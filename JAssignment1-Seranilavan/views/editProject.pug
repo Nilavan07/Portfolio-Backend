@@ -1,0 +1,181 @@
+doctype html
+html
+  head
+    title Edit Project
+    style.
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+        color: #555;
+      }
+      input, textarea, .file-input-container {
+        width: 100%;
+        padding: 12px;
+        margin-top: 8px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+        background-color: #fff;
+        transition: border 0.3s;
+      }
+      input:focus, textarea:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+      textarea {
+        height: 120px;
+        resize: vertical;
+      }
+      .image-preview {
+        margin: 15px 0;
+        text-align: center;
+      }
+      .image-preview img {
+        max-width: 100%;
+        max-height: 200px;
+        border-radius: 6px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+      .file-input-container {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        overflow: hidden;
+        border: 1px dashed #ccc;
+      }
+      .file-input-label {
+        padding: 12px;
+        background: #f8f9fa;
+        cursor: pointer;
+        text-align: center;
+        color: #555;
+        transition: background 0.3s;
+      }
+      .file-input-label:hover {
+        background: #e9ecef;
+      }
+      .file-input {
+        display: none;
+      }
+      .file-name {
+        padding: 8px 12px;
+        font-size: 14px;
+        color: #666;
+      }
+      .button-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 25px;
+      }
+      .button-group button, .button-group a {
+        flex: 1;
+        padding: 12px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.3s;
+      }
+      .save-btn {
+        background: #28a745;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      .save-btn:hover {
+        background: #218838;
+      }
+      .cancel-btn {
+        background: #6c757d;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cancel-btn:hover {
+        background: #5a6268;
+      }
+      .delete-btn {
+        background: #dc3545;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-top: 10px;
+        width: 100%;
+        padding: 12px;
+        border-radius: 6px;
+        font-size: 16px;
+      }
+      .delete-btn:hover {
+        background: #c82333;
+      }
+  body
+    .container
+      h1 Edit Project
+
+      form(method="POST" action=`/admin/projects/edit/${project._id}` enctype="multipart/form-data")
+        label(for="name") Project Name:
+        input(type="text" name="name" value=project.name required)
+
+        label(for="description") Description:
+        textarea(name="description" required)= project.description
+
+        label(for="technologies") Technologies:
+        input(type="text" name="technologies" value=project.technologies required)
+
+        label(for="link") Project Link:
+        input(type="url" name="link" value=project.link)
+
+        if project.imagePath
+          .image-preview
+            label Current Image:
+            br
+            img(src=project.imagePath alt="Current project image")
+        
+        label Project Image:
+        .file-input-container
+          label.file-input-label(for="image") 📁 Choose new image...
+            input.file-input(type="file" name="image" id="image" accept="image/*" onchange="updateFileName(this)")
+          .file-name(id="fileName") #{project.imagePath ? 'Keep current image' : 'No image selected'}
+
+        .button-group
+          button.save-btn(type="submit") 💾 Save Changes
+          a.cancel-btn(href="/admin") ✖ Cancel
+
+      form(method="POST" action=`/admin/projects/${project._id}?_method=DELETE` style="margin-top: 20px")
+        button.delete-btn(type="submit" onclick="return confirm('Are you sure you want to delete this project?')") 🗑 Delete Project
+
+      script.
+        function updateFileName(input) {
+          const fileNameDisplay = document.getElementById('fileName');
+          if (input.files.length > 0) {
+            fileNameDisplay.textContent = input.files[0].name;
+          } else {
+            fileNameDisplay.textContent = '#{project.imagePath ? "Keep current image" : "No image selected"}';
+          }
+        }

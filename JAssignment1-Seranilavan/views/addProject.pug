@@ -1,0 +1,119 @@
+doctype html
+html
+  head
+    title Add Project
+    style.
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .container {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        width: 420px;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-top: 12px;
+        font-weight: bold;
+        color: #555;
+      }
+      input, textarea, .file-input-container {
+        width: 100%;
+        padding: 12px;
+        margin-top: 6px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 15px;
+        background-color: #fff;
+      }
+      textarea {
+        height: 100px;
+        resize: vertical;
+      }
+      .file-input-container {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        overflow: hidden;
+      }
+      .file-input-label {
+        padding: 12px;
+        background: #f8f9fa;
+        cursor: pointer;
+        text-align: center;
+        color: #555;
+        transition: background 0.3s;
+      }
+      .file-input-label:hover {
+        background: #e9ecef;
+      }
+      .file-input {
+        display: none;
+      }
+      .file-name {
+        padding: 8px 12px;
+        font-size: 14px;
+        color: #666;
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 18px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 17px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+      button:hover {
+        background: #218838;
+      }
+  body
+    .container
+      h1 Add Project
+      form(action="/admin/projects/add" method="POST" enctype="multipart/form-data")
+        label(for="name") Project Name:
+        input(type="text" name="name" required placeholder="Enter project name")
+
+        label(for="description") Description:
+        textarea(name="description" required placeholder="Describe your project")
+
+        label(for="technologies") Technologies:
+        input(type="text" name="technologies" required placeholder="e.g., HTML, CSS, JavaScript")
+
+        label(for="link") Project Link:
+        input(type="url" name="link" placeholder="https://example.com")
+
+        label Project Image:
+        .file-input-container
+          label.file-input-label(for="image") 📁 Choose an image...
+            input.file-input(type="file" name="image" id="image" accept="image/*" onchange="updateFileName(this)")
+          .file-name(id="fileName") No file selected
+
+        button(type="submit") ➕ Add Project
+
+      script.
+        function updateFileName(input) {
+          const fileNameDisplay = document.getElementById('fileName');
+          if (input.files.length > 0) {
+            fileNameDisplay.textContent = input.files[0].name;
+          } else {
+            fileNameDisplay.textContent = 'No file selected';
+          }
+        }

@@ -1,0 +1,56 @@
+doctype html
+html
+  head
+    title Admin Panel
+    link(rel="stylesheet" href="/styles.css")
+    link(rel="preconnect" href="https://fonts.googleapis.com")
+    link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet")
+
+  body
+    .admin-container
+      h1 Admin Dashboard
+
+      section.admin-section
+        h2 Manage Projects
+        a.btn.btn-primary(href="/admin/projects/add") ➕ Add Project
+        if projects.length
+          table
+            thead
+              tr
+                th Name
+                th Description
+                th Technologies
+                th Link
+                th Actions
+            tbody
+              each project in projects
+                tr
+                  td= project.name
+                  td= project.description
+                  td= project.technologies
+                  td 
+                    if project.link
+                      a(href=project.link target="_blank") View
+                    else
+                      span No link
+                  td.actions
+                    a.btn.btn-edit(href=`/admin/projects/edit/${project._id}`) Edit
+                    form(method="POST" action=`/admin/projects/${project._id}?_method=DELETE`)
+                      button.btn.btn-delete(type="submit" onclick="return confirm('Are you sure you want to delete this project?');") Delete
+        else
+          p.no-data No projects yet.
+
+      section.admin-section
+        h2 Manage Skills
+        a.btn.btn-primary(href="/admin/skills/add") ➕ Add Skill
+        if skills.length
+          ul.skills-list
+            each skill in skills
+              li 
+                span.skill-name #{skill.name} - #{skill.proficiency}
+                a.btn.btn-edit(href=`/admin/skills/edit/${skill._id}`) Edit
+                form(method="POST" action=`/admin/skills/${skill._id}?_method=DELETE`)
+                  button.btn.btn-delete(type="submit" onclick="return confirm('Are you sure you want to delete this skill?');") Delete
+        else
+          p.no-data No skills added yet.

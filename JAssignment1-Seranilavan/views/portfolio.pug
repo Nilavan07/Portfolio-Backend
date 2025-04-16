@@ -1,0 +1,52 @@
+doctype html
+html
+  head
+    title My Professional Portfolio
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet" href="/style.css") 
+    link(rel="preconnect" href="https://fonts.googleapis.com")
+    link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css")
+
+  body
+    .container
+      header.hero
+        .hero-text
+          h1 Welcome to My Portfolio
+          p Passionate Web Developer creating impactful digital experiences.
+
+      section.projects(id="projects")
+        h2 Projects
+        if projects.length
+          .grid
+            each project in projects
+              .card
+                h3= project.name
+                p.description= project.description
+                
+                if project.technologies && project.technologies.length > 0
+                  p.tech-stack
+                    strong Tech Stack:
+                    each tech in project.technologies
+                      span.badge= tech
+
+                if project.link
+                  a.button(href=project.link target="_blank") View Project
+        else
+          p No projects added yet.
+
+      section.skills
+        h2 Skills
+        if skills.length
+          .skills-grid
+            each skill in skills
+              .skill-chip 
+                i(class="fa-solid fa-check") 
+                | #{skill.name} - #{skill.proficiency}
+        else
+          p No skills added yet.
+
+      footer
+        p &copy; 2025 My Portfolio. All rights reserved.
